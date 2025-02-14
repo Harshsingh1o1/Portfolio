@@ -1,10 +1,16 @@
-Portfolio
+🌟 Harsh Singh's Portfolio
+Welcome to my portfolio repository! This project showcases my skills, projects, and experience in data science and analytics.
 
-Welcome to my portfolio repository! This project showcases my skills, projects, and achievements in Data Science and Analytics.
+🚀 About the Portfolio
+This portfolio serves as a central hub for my projects, highlighting my expertise in data analysis, visualization, and programming. It includes interactive dashboards, machine learning models, and other exciting projects.
 
-This portfolio is designed to highlight my work and accomplishments in Data Science and Analytics. It includes various projects, each demonstrating different aspects of my skill set.
+📌 Features
+Showcases data science and analytics projects
+Interactive visualizations using Dash and Plotly
+Clean and responsive user interface
+Easy-to-navigate structure for project exploration
 
-Features
-Detailed showcase of projects with descriptions and code examples.
-Interactive visualizations and data analyses.
-Clean and intuitive user interface.
+🛠️ Technologies Used
+Languages: Python, R, SQL
+Frameworks & Libraries: Dash, Plotly, Pandas, NumPy
+Tools: Jupyter Notebook, Git, GitHub, VS Code
