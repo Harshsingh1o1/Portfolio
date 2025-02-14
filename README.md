@@ -1,6 +1,6 @@
 Portfolio
 
-Welcome to my portfolio repository! This project showcases my skills, projects, and achievements in Data Analysis.
+Welcome to my portfolio repository! This project showcases my skills, projects, and achievements in Data Science and Analytics.
 
 This portfolio is designed to highlight my work and accomplishments in Data Science and Analytics. It includes various projects, each demonstrating different aspects of my skill set.
 
