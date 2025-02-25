@@ -12,5 +12,5 @@ Easy-to-navigate structure for project exploration
 
 🛠️ Technologies Used
 Languages: Python, R, SQL
-Frameworks & Libraries: Dash, Plotly, Pandas, NumPy
-Tools: Jupyter Notebook, Git, GitHub, VS Code
+Frameworks & Libraries: Pandas, NumPy, Matplotlib, Seaborn, Dash, Plotly
+Tools: Jupyter Notebook, GitHub, VS Code
