@@ -5,6 +5,7 @@ Nashville Housing Data Cleaning in SQL
 
 --------------------------------------------------------------------------------------------------------------------------
 -- Create a table for our Nashville Housing data
+
 CREATE TABLE NashvilleHousing (
     UniqueID INT,
     ParcelID VARCHAR(50),
@@ -27,9 +28,10 @@ CREATE TABLE NashvilleHousing (
     HalfBath INT
 );
 
---------------------------------------------------------------------------------------------------------------------------
+
 -- After importing data into the table, perform the following cleaning operations:
 
+--------------------------------------------------------------------------------------------------------------------------
 -- 1. Standardize Date Format (convert from datetime to date)
 -- Remove timestamp from SaleDate
 ALTER TABLE NashvilleHousing
