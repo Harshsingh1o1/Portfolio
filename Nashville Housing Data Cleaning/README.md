@@ -1,4 +1,4 @@
-#Based on my analysis of the Nashville housing dataset, here are the key data-cleaning issues that need to be addressed:
+## Based on my analysis of the Nashville housing dataset, here are the key data-cleaning issues that need to be addressed:
 
 Duplicate Parcel IDs: There are 7,245 duplicate Parcel IDs, suggesting multiple sales of the same property.
 Formatting issues in Property Addresses: Almost all addresses have multiple spaces that need standardization.
