@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS NashvilleHousing (
 );
 
 -- After importing the CSV, let's start cleaning the data
-
+-------------------------------------------------------------------------------------------------
 -- 1. STANDARDIZE PROPERTY ADDRESSES: Remove multiple spaces
 -- Create a view for standardized property addresses
 CREATE VIEW StandardizedPropertyAddress AS
