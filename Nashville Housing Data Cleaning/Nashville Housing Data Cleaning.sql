@@ -47,6 +47,7 @@ SELECT
     PropertyCity
 FROM NashvilleHousing;
 
+-------------------------------------------------------------------------------------------------
 -- 2. POPULATE MISSING PROPERTY ADDRESSES
 -- For properties with missing addresses, use the address from other entries with the same ParcelID
 CREATE VIEW PopulatedPropertyAddress AS
@@ -70,6 +71,7 @@ JOIN NashvilleHousing b
     AND a.ID <> b.ID
 WHERE a.PropertyAddress IS NULL AND b.PropertyAddress IS NOT NULL;
 
+-------------------------------------------------------------------------------------------------
 -- 3. BREAKING OUT PROPERTY ADDRESS INTO INDIVIDUAL COLUMNS (Address, City, State)
 -- Create a view with separated property address components
 CREATE VIEW SeparatedPropertyAddress AS
@@ -81,6 +83,7 @@ SELECT
 FROM NashvilleHousing
 WHERE PropertyAddress IS NOT NULL;
 
+-------------------------------------------------------------------------------------------------
 -- 4. STANDARDIZE SALE DATE FORMAT
 -- Ensure all SaleDate values are in a consistent format
 CREATE VIEW StandardizedSaleDate AS
@@ -90,6 +93,7 @@ SELECT
     CONVERT(Date, SaleDate) AS ConvertedSaleDate
 FROM NashvilleHousing;
 
+-------------------------------------------------------------------------------------------------
 -- 5. STANDARDIZE "SOLD AS VACANT" FIELD (Change Y and N to Yes and No)
 SELECT DISTINCT SoldAsVacant, COUNT(SoldAsVacant)
 FROM NashvilleHousing
@@ -103,6 +107,7 @@ SET SoldAsVacant = CASE
                       ELSE SoldAsVacant
                    END;
 
+-------------------------------------------------------------------------------------------------
 -- 6. REMOVE DUPLICATES
 -- Create a CTE to identify duplicate records
 WITH RowNumCTE AS (
@@ -125,6 +130,7 @@ WHERE ID IN (
     WHERE row_num > 1
 );
 
+-------------------------------------------------------------------------------------------------
 -- 7. STANDARDIZE LAND USE CATEGORIES
 -- Create a standardized land use field
 CREATE VIEW StandardizedLandUse AS
@@ -138,6 +144,7 @@ SELECT
     END AS StandardizedLandUse
 FROM NashvilleHousing;
 
+-------------------------------------------------------------------------------------------------
 -- 8. HANDLE ANOMALOUS SALE PRICES
 -- Identify extremely low or high sale prices for review
 CREATE VIEW AnomalousSalePrices AS
@@ -156,6 +163,7 @@ SELECT
 FROM NashvilleHousing
 WHERE SalePrice < 1000 OR SalePrice > 10000000;
 
+-------------------------------------------------------------------------------------------------
 -- 9. CREATE LOGIC TO FLAG INCOMPLETE RECORDS
 -- Flag records with missing important information
 CREATE VIEW IncompleteRecords AS
@@ -179,6 +187,7 @@ SELECT
     END AS MissingTotalValue
 FROM NashvilleHousing;
 
+-------------------------------------------------------------------------------------------------
 -- 10. IDENTIFY UNUSUAL YEAR BUILT VALUES
 CREATE VIEW UnusualYearBuilt AS
 SELECT
@@ -193,6 +202,7 @@ SELECT
 FROM NashvilleHousing
 WHERE YearBuilt < 1800 OR YearBuilt > 2016;
 
+-------------------------------------------------------------------------------------------------
 -- 11. CALCULATE PROPERTY AGE AT SALE TIME
 ALTER TABLE NashvilleHousing
 ADD PropertyAge INT;
@@ -201,6 +211,7 @@ UPDATE NashvilleHousing
 SET PropertyAge = YEAR(SaleDate) - YearBuilt
 WHERE YearBuilt IS NOT NULL;
 
+-------------------------------------------------------------------------------------------------
 -- 12. CREATE A PRICE PER SQUARE FOOT FIELD
 ALTER TABLE NashvilleHousing
 ADD PricePerSqFt DECIMAL(10,2);
@@ -209,6 +220,7 @@ UPDATE NashvilleHousing
 SET PricePerSqFt = SalePrice / FinishedArea
 WHERE FinishedArea > 0;
 
+-------------------------------------------------------------------------------------------------
 -- 13. STANDARDIZE OWNER NAMES (Remove inconsistent formatting)
 CREATE VIEW StandardizedOwnerNames AS
 SELECT
@@ -218,6 +230,7 @@ SELECT
 FROM NashvilleHousing
 WHERE OwnerName IS NOT NULL;
 
+-------------------------------------------------------------------------------------------------
 -- 14. STANDARDIZE STATE ABBREVIATIONS
 CREATE VIEW StandardizedStates AS
 SELECT
@@ -231,6 +244,7 @@ SELECT
 FROM NashvilleHousing
 WHERE OwnerState IS NOT NULL;
 
+-------------------------------------------------------------------------------------------------
 -- 15. CREATE PROPERTY TYPE CATEGORIES
 ALTER TABLE NashvilleHousing
 ADD PropertyType VARCHAR(50);
@@ -248,6 +262,7 @@ SET PropertyType =
         ELSE 'Other'
     END;
 
+-------------------------------------------------------------------------------------------------
 -- 16. CREATE SALES QUARTER AND YEAR FIELDS FOR TREND ANALYSIS
 ALTER TABLE NashvilleHousing
 ADD SaleYear INT,
@@ -259,6 +274,7 @@ SET SaleYear = YEAR(SaleDate),
     SaleQuarter = DATEPART(QUARTER, SaleDate),
     SaleYearQuarter = CONCAT(YEAR(SaleDate), 'Q', DATEPART(QUARTER, SaleDate));
 
+-------------------------------------------------------------------------------------------------
 -- 17. CREATE FINAL CLEANED VIEW
 CREATE VIEW NashvilleHousingCleaned AS
 SELECT
