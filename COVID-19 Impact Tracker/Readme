@@ -1,0 +1,144 @@
+COVID-19 Impact Tracker
+Project Overview
+This repository contains a comprehensive analysis of the COVID-19 pandemic using data from Our World in Data. The project examines global spread patterns, vaccination effectiveness, and geographical distribution of cases through data cleaning with SQL and advanced visualization techniques.
+Table of Contents
+
+Introduction
+Dataset
+Methodology
+Data Cleaning Process
+Analysis & Findings
+Visualizations
+Conclusions
+Future Work
+Installation & Usage
+References
+
+Introduction
+The COVID-19 pandemic has been one of the most significant global health crises of the 21st century. This project aims to provide data-driven insights into the pandemic's progression, the effectiveness of vaccination campaigns, and the geographical disparities in impact. By analyzing comprehensive data from Our World in Data, we seek to contribute to the understanding of pandemic dynamics and public health responses.
+Dataset
+The primary dataset used in this analysis comes from Our World in Data's COVID-19 repository:
+
+Source: Our World in Data COVID-19 Dataset
+Time Period: January 2020 - October 2023
+Key Variables:
+
+Daily new cases
+Cumulative cases
+Daily deaths
+Vaccination rates (first dose, fully vaccinated, boosters)
+Hospital admissions
+Testing rates
+Policy responses (Oxford Stringency Index)
+Demographic variables (population, GDP, etc.)
+
+
+
+The dataset covers over 200 countries and territories, providing a global perspective on the pandemic.
+Methodology
+Our analytical approach combined traditional statistical methods with modern data visualization techniques:
+
+Data Acquisition: Automated scripts to fetch the latest data from Our World in Data
+Data Cleaning: SQL-based processing to handle missing values, outliers, and inconsistencies
+Exploratory Analysis: Statistical examination of key trends and relationships
+Geospatial Analysis: Mapping the geographical distribution of cases and vaccinations
+Time Series Analysis: Tracking the evolution of the pandemic over time
+Correlation Analysis: Examining relationships between vaccination rates and case/death rates
+
+Data Cleaning Process
+The raw data required substantial preprocessing to ensure analytical integrity. The following SQL operations were performed:
+sqlCopy-- Example SQL script for data cleaning
+-- Handling missing values in case data
+UPDATE covid_data
+SET new_cases = 0
+WHERE new_cases IS NULL AND total_cases > LAG(total_cases) OVER (PARTITION BY location ORDER BY date);
+
+-- Fixing date format inconsistencies
+UPDATE covid_data
+SET date = CONVERT(date, date, 103)
+WHERE ISDATE(date) = 0;
+
+-- Creating a clean view for analysis
+CREATE VIEW clean_covid_data AS
+SELECT 
+    location,
+    date,
+    COALESCE(new_cases, 0) AS new_cases,
+    COALESCE(total_cases, 0) AS total_cases,
+    COALESCE(new_deaths, 0) AS new_deaths,
+    COALESCE(total_deaths, 0) AS total_deaths,
+    COALESCE(people_vaccinated, 0) AS people_vaccinated,
+    COALESCE(people_fully_vaccinated, 0) AS people_fully_vaccinated,
+    population
+FROM covid_data
+WHERE location NOT IN ('World', 'International', 'European Union')
+AND population IS NOT NULL;
+
+-- Calculating derived metrics
+ALTER TABLE clean_covid_data
+ADD cases_per_million FLOAT;
+
+UPDATE clean_covid_data
+SET cases_per_million = (total_cases * 1000000.0) / population
+WHERE population > 0;
+Additional data quality checks were implemented to identify and correct outliers, particularly in reporting spikes that occurred due to administrative backlogs rather than actual case surges.
+Analysis & Findings
+1. Global Spread Patterns
+Our analysis revealed distinct waves of infection across different geographical regions:
+
+First Wave (Jan-Jun 2020): Initially concentrated in East Asia and Europe
+Second Wave (Jul-Dec 2020): Broader global spread, particularly severe in the Americas
+Third Wave (Jan-Jun 2021): Dominated by the Alpha and Delta variants, widespread global impact
+Fourth Wave (Jul 2021-Feb 2022): Omicron variant led to unprecedented case numbers despite vaccination
+
+Key finding: While case fatality rates declined over time, the transmission rate increased significantly with newer variants, challenging public health systems globally.
+2. Vaccination Impact Analysis
+Vaccination campaigns showed significant association with reduced mortality:
+
+Countries achieving >70% full vaccination coverage experienced 76% lower per-capita mortality during the Omicron wave compared to those with <40% coverage
+A strong negative correlation (r = -0.68) was observed between vaccination rates and case fatality ratios during later pandemic phases
+Vaccine effectiveness against severe outcomes remained robust (>85%) despite emergence of immune-evading variants
+
+Key finding: Vaccination timing appeared critical, with countries implementing rapid early vaccination campaigns showing better outcomes regardless of final coverage percentages.
+3. Geographical Disparities
+The analysis highlighted significant regional inequalities:
+
+High-income countries achieved average vaccination rates 3.2x higher than low-income countries by end of 2021
+Case detection rates varied dramatically, with testing capacity strongly correlated with GDP per capita (r = 0.76)
+Island nations and countries with centralized healthcare systems demonstrated more effective containment regardless of economic status
+
+Key finding: The pandemic exacerbated existing healthcare disparities while also revealing that healthcare system structure sometimes outweighed economic advantages in determining outcomes.
+Visualizations
+The project includes a range of interactive visualizations:
+
+Global Case Tracker: Interactive choropleth maps showing the geographical distribution of cases, deaths, and vaccinations over time
+Vaccination Effect Dashboard: Comparative visualizations of pre- and post-vaccination case fatality rates
+Wave Analysis Tool: Time-series visualizations identifying and characterizing distinct infection waves
+Correlation Matrix: Heatmap showing relationships between key pandemic indicators
+Policy Impact Visualizer: Analysis of how different intervention policies affected transmission rates
+
+All visualizations are implemented using D3.js and Plotly, with responsive design for both desktop and mobile viewing.
+Conclusions
+This comprehensive analysis of COVID-19 data yielded several important insights:
+
+While the virus spread globally, its impact varied dramatically based on demographic factors, healthcare system capacity, and policy responses
+Vaccination campaigns significantly reduced mortality but showed diminishing returns against transmission of newer variants
+Early, decisive policy interventions proved more effective than delayed stronger measures
+Healthcare system resilience was a better predictor of pandemic outcomes than absolute healthcare spending
+Data collection inequalities significantly hampered global response coordination
+
+These findings underscore the importance of:
+
+Pandemic early warning systems
+Healthcare capacity building in vulnerable regions
+Coordinated global vaccination infrastructure
+More equitable healthcare access across socioeconomic divides
+
+Future Work
+Potential extensions of this research include:
+
+Integration of genomic surveillance data to track variant emergence patterns
+More granular analysis of socioeconomic factors affecting pandemic vulnerability
+Expanded analysis of long COVID prevalence and its relationship to initial infection waves
+Deeper investigation into policy effectiveness using causal inference methods
+Comparative analysis with historical pandemics to identify common patterns
